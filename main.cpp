@@ -1,42 +1,79 @@
-#include "Line.h"
+#include "line.h"
+#include "string"
 double const PI = 3.14159265359;
 double Line::eps = 0.0001;
+bool check_number(const std::string& num) {
+    int dot_use = 1;
+    for (int i = 0; i < num.size(); ++i) {
+        if (!isdigit(num[i]) && !(num[i] == '.' && dot_use)) return false;
+        if (num[i] == '.') dot_use = 0;
+    }
+    return true;
+}
 void get_trinagle() {
-    double alp, a;
-    std::cout << "angle alpha in degrees = "; std::cin >> alp;
-    while (alp <= 0 || alp >= 180) {
+    double alp;
+    double a;
+    std::string alp_t;
+    std::cout << "angle alpha in degrees = "; std::cin >> alp_t;
+    while (!check_number(alp_t) || std::stod(alp_t) <= 0 || std::stod(alp_t) >= 180) {
         std::cout << "Incorrect angle\n";
-        std::cout << "angle alpha in degrees = "; std::cin >> alp;
+        std::cout << "angle alpha in degrees = "; std::cin >> alp_t;
     }
-    std::cout << "lengh of side = "; std::cin >> a;
-    while (a < 1e-5) {
+    alp = std::stod(alp_t);// string to double
+    std::string a_t;
+    std::cout << "lengh of side = "; std::cin >> a_t;
+    while (!check_number(a_t) || std::stof(a_t) < 1e-5) {
         std::cout << "incorrect lenght\n";
-        std::cout << "angle alpha in degrees = "; std::cin >> alp;
+        std::cout << "lengh of side = "; std::cin >> a_t;
     }
+    a = std::stod(a_t);
     Line ans(4);
     ans[1].x = a * sin(alp / 2 * PI / 180.0);
     ans[1].y = a * cos(alp / 2 * PI / 180.0);
     ans[2].y = 0;
-    ans[2].x = a;
+    ans[2].x = ans[1].x * 2.0;
     std::cout << ans;
 }
 void point(Line& res);
 void set_tmp(Line& res) {
     int n;
-    std::cout << "num of elems = "; std::cin >> n;
+    std::string n_t;
+    std::cout << "num of elems = "; std::cin >> n_t;
+    while (!check_number(n_t) && std::stoi(n_t) < 0) {
+        std::cout << "Incorrect number\n";
+        std::cout << "num of elems = "; std::cin >> n_t;
+    }
+    n = std::stoi(n_t);
     res = Line(n);
     for (int i = 0; i < res.size(); ++i) point(res);
 }
 void point(Line& res) {
     int id;
-    std::cout << "num of point = "; std::cin >> id;
+    std::string id_t;
+    std::cout << "id = "; std::cin >> id_t;
+    while (!check_number(id_t) || std::stoi(id_t) < 0) {
+        std::cout << "Incorrect number\n";
+        std::cout << "id = "; std::cin >> id_t;
+    }
+    id = std::stoi(id_t);
     std::cout << res[id].x << " " << res[id].y << "\n";
     int cmd;
     std::cout << "do you want to change? (1/0) "; std::cin >> cmd;
     if (cmd) {
-        double x, y;
-        std::cout << "x = "; std::cin >> x;
-        std::cout << "y = "; std::cin >> y;
+        std::string x_t;
+        std::cout << "x = "; std::cin >> x_t;
+        while (!check_number(x_t)) {
+            std::cout << "Incorrect number\n";
+            std::cout << "x = "; std::cin >> x_t;
+        }
+       float  x = std::stof(x_t);
+        std::string y_t;
+        std::cout << "y = "; std::cin >> y_t;
+        while (!check_number(y_t)) {
+            std::cout << "Incorrect number\n";
+            std::cout << "y = "; std::cin >> y_t;
+        }
+        float y = std::stof(y_t);
         res[id].x = x;
         res[id].y = y;
     }
@@ -48,8 +85,20 @@ void concat1(Line& a, Line& b) {
 }
 void concat2(Line& a, Point b) {
     double x, y;
-    std::cout << "x = "; std::cin >> x;
-    std::cout << "y = "; std::cin >> y;
+    std::string x_t;
+    std::cout << "x = "; std::cin >> x_t;
+    while (!check_number(x_t)) {
+        std::cout << "Incorrect number\n";
+        std::cout << "x = "; std::cin >> x_t;
+    }
+    x = std::stof(x_t);
+    std::string y_t;
+    std::cout << "y = "; std::cin >> y_t;
+    while (!check_number(y_t)) {
+        std::cout << "Incorrect number\n";
+        std::cout << "y = "; std::cin >> y_t;
+    }
+    y = std::stof(y_t);
     b.x = x;
     b.y = y;
     Line tmp = a + b;
@@ -57,8 +106,20 @@ void concat2(Line& a, Point b) {
 }
 void concat3(Point b, Line& a) {
     double x, y;
-    std::cout << "x = "; std::cin >> x;
-    std::cout << "y = "; std::cin >> y;
+    std::string x_t;
+    std::cout << "x = "; std::cin >> x_t;
+    while (!check_number(x_t)) {
+        std::cout << "Incorrect number\n";
+        std::cout << "x = "; std::cin >> x_t;
+    }
+    x = std::stof(x_t);
+    std::string y_t;
+    std::cout << "y = "; std::cin >> y_t;
+    while (!check_number(y_t)) {
+        std::cout << "Incorrect number\n";
+        std::cout << "y = "; std::cin >> y_t;
+    }
+    y = std::stof(y_t);
     b.x = x;
     b.y = y;
     Line tmp = b + a;
@@ -67,7 +128,8 @@ void concat3(Point b, Line& a) {
 void len(Line& a) {
     std::cout << a.len() << "\n";
 }
-int main() {
+int main() 
+{
     Line tmp1(1);
     Point tmp2;
     Line tmp3;
@@ -75,6 +137,7 @@ int main() {
     while (true) {
         std::cout << "1 set the line\n2 set/get point in line\n3 concat with other line\n4 concat with point (end)\n5 concat with point (begin)\n6 get lenght of line\n7 get trinagle\n8 print the line\n9 exit\n";
         std::cin >> cmd;
+        if (cmd == 9) break;
         switch (cmd)
         {
         case 1: 
@@ -108,8 +171,6 @@ int main() {
         case 8:
             system("cls");
             std::cout << tmp1;
-            break;
-        case 9:
             break;
         }
         
